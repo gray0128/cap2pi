@@ -94,8 +94,20 @@ ID 既没有 `anthropic` 所有者，也没有 `anthropic/` 前缀时，Claude �
 ## 检查
 
 ```sh
-npm test
-npm run typecheck
+npm run check
 ```
 
-测试不访问外网。类型检查使用 `@earendil-works/pi-ai@1.3.0` 和 `@earendil-works/pi-coding-agent@1.3.0`。
+`npm run check` 依次运行 `npm run typecheck` 和 `npm test`。测试不访问外网。类型检查使用 `@earendil-works/pi-ai@1.3.0` 和 `@earendil-works/pi-coding-agent@1.3.0`。发布工作流使用同一条命令。
+
+## 发布
+
+发布由 GitHub Actions 工作流 `.github/workflows/release.yml` 完成。触发条件是推送 `v` 开头的标签。标签去掉前缀 `v` 之后必须等于 `package.json` 的 `version`。两者不一致时，工作流失败，不发布到 npm，也不创建 GitHub Release。
+
+工作流在公开仓库的 GitHub 托管 runner 上安装依赖，并运行 `npm run check`。检查通过后，工作流通过 OpenID Connect（OIDC）可信发布执行 `npm publish`，然后创建同名 GitHub Release，并附上打包文件。
+
+首次发布前，把该包的 GitHub Actions 可信发布者设为仓库 `gray0128/cap2pi`、工作流文件 `release.yml`，并允许直接 `npm publish`。不要把 npm token 写入仓库或 GitHub Secrets。当前版本 `0.1.1` 已经在 npm 上。下一次发布先提高 `version`，再推送对应标签。不要用已经发布或已被 npm 占用的版本号重新推送标签。
+
+```sh
+git tag "v$(node -p "require('./package.json').version")"
+git push origin "v$(node -p "require('./package.json').version")"
+```

@@ -1,6 +1,6 @@
 {
   "name": "@gray0128/pi-cliproxyapi-provider",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Pi provider for a local or remote CLIProxyAPI OpenAI-compatible endpoint.",
   "license": "MIT",
   "type": "module",

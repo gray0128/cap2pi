@@ -10,21 +10,33 @@
 
 ## 安装
 
-在扩展目录执行：
+从 npm 安装到用户设置：
 
 ```sh
-pi -e .
+pi install npm:@gray0128/pi-cliproxyapi-provider
 ```
 
-安装到 Pi 的用户设置：
+仅安装到当前项目（写入 `.pi/settings.json`）：
+
+```sh
+pi install npm:@gray0128/pi-cliproxyapi-provider -l
+```
+
+从本地源码目录安装：
 
 ```sh
 pi install /absolute/path/to/cap2pi
 ```
 
+本地开发临时加载（仅对当次进程生效）：
+
+```sh
+pi -e .
+```
+
 `pi list` 只列出已经写入设置的扩展。`-e` 只对当次进程生效。
 
-不得与下列扩展同时启用。它们使用同一个供应商 ID，后加载的注册会覆盖先加载的注册。
+不得与下列扩展同时启用。它们使用同一个供应商 ID，后加载的注册会覆盖先加载的注册：
 
 - `pi-cliproxyapi-provider`
 - `@hank-warren/pi-cliproxyapi-provider`
